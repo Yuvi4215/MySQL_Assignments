@@ -1,0 +1,204 @@
+===============================
+MYSQL ASSIGNMENT – COMPLETE FILE
+===============================
+
+-----------------------------------------
+1) Login to MySQL and Show All Databases
+-----------------------------------------
+
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 32
+Server version: 8.0.44 MySQL Community Server - GPL
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demodb             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.02 sec)
+
+
+-----------------------------------------
+2) Create countries Table and Describe It
+-----------------------------------------
+
+mysql> use demodb;
+Database changed
+
+mysql> show tables;
++------------------+
+| Tables_in_demodb |
++------------------+
+| emp              |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> create table countries
+    -> (country_id int, country_name varchar(20), region_id int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc countries;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| country_id   | int         | YES  |     | NULL    |       |
+| country_name | varchar(20) | YES  |     | NULL    |       |
+| region_id    | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+
+-----------------------------------------
+3) Create jobs Table With CHECK Constraint
+-----------------------------------------
+
+mysql> create table jobs
+    -> (job_id int primary key, job_title varchar(30),
+    ->  min_salary mediumint, max_salary mediumint check(max_salary<25000));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc jobs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| job_id     | int         | NO   | PRI | NULL    |       |
+| job_title  | varchar(30) | YES  |     | NULL    |       |
+| min_salary | mediumint   | YES  |     | NULL    |       |
+| max_salary | mediumint   | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+
+-----------------------------------------
+4) Create job_history Table
+-----------------------------------------
+
+mysql> create table job_history
+    -> (employee_id int, start_date date, end_date date, job_id int, department_id int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc job_histrory;
+ERROR 1146 (42S02): Table 'demodb.job_histrory' doesn't exist
+
+mysql> desc job_history;
++---------------+------+------+-----+---------+-------+
+| Field         | Type | Null | Key | Default | Extra |
++---------------+------+------+-----+---------+-------+
+| employee_id   | int  | YES  |     | NULL    |       |
+| start_date    | date | YES  |     | NULL    |       |
+| end_date      | date | YES  |     | NULL    |       |
+| job_id        | int  | YES  |     | NULL    |       |
+| department_id | int  | YES  |     | NULL    |       |
++---------------+------+------+-----+---------+-------+
+
+
+-----------------------------------------
+5) Alter countries to make country_id UNIQUE
+-----------------------------------------
+
+mysql> alter table countries
+    -> modify column country_id int unique;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc countries;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| country_id   | int         | YES  | UNI | NULL    |       |
+| country_name | varchar(20) | YES  |     | NULL    |       |
+| region_id    | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+
+-----------------------------------------
+6) Re-create jobs Table With Default Values
+-----------------------------------------
+
+mysql> drop table jobs;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table jobs
+    -> (job_id int, job_title varchar(30) default "",
+    ->  min_salary mediumint default 8000,
+    ->  max_salary mediumint default null);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc jobs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| job_id     | int         | YES  |     | NULL    |       |
+| job_title  | varchar(30) | YES  |     |         |       |
+| min_salary | mediumint   | YES  |     | 8000    |       |
+| max_salary | mediumint   | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+
+-----------------------------------------
+7) Create manager & department Tables (With FK)
+-----------------------------------------
+
+mysql> create table manager
+    -> (manager_id int primary key);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into manager values (0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> table manager;
++------------+
+| manager_id |
++------------+
+|          0 |
++------------+
+1 row in set (0.00 sec)
+
+
+-- Multiple failed attempts (kept exactly as executed) --
+
+mysql> create table department
+    -> (department_id decimal(4,0) primary key,
+    ->  department_name varchar(30) not null,
+    ->  manager_id decimal(6,0) foreign key referances manager(manager_id) not null,
+    ->  location_id int);
+ERROR 1064...
+
+mysql> insetr into manager values (0);
+ERROR 1064...
+
+
+-- Final successful department table exists --
+
+mysql> show tables;
++------------------+
+| Tables_in_demodb |
++------------------+
+| countries        |
+| department       |
+| emp              |
+| job_history      |
+| jobs             |
+| manager          |
++------------------+
+6 rows in set (0.00 sec)
+
+mysql> desc department;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| department_id   | decimal(4,0) | NO   | PRI | NULL    |       |
+| department_name | varchar(30)  | NO   |     | NULL    |       |
+| manager_id      | int          | NO   | MUL | 0       |       |
+| location_id     | int          | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+
+===============================
+END OF COMPLETE MYSQL FILE
+===============================
