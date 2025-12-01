@@ -1,0 +1,80 @@
+mysql_assignment_2:
+  title: "MySQL Assignment - 2 (DML)"
+  questions:
+
+    - number: 1
+      question: "Write a SQL statement to insert records into the employees table."
+      answer:
+        - "create table employees
+          (EMPLOYEE_ID int, FIRST_NAME varchar(20), LAST_NAME varchar(20), EMAIL varchar(45),
+           PHONE_NUMBER bigint, HIRE_DATE date, JOB_ID char(10), SALARY int,
+           COMMISSION_PCT float(5,2), MANAGER_ID int, DEPARTMENT_ID int);"
+        - "table employees;"
+        - "describe employees;"
+
+    - number: 2
+      question: "Write a SQL statement to insert 3 rows into the departments table using a single insert statement."
+      answer:
+        - "create table departments
+          (DEPARTMENT_ID int, DEPARTMENT_NAME varchar(45), MANAGER_id int, LOCATION_ID int);"
+        - |
+          insert into departments values
+          (10, 'Administration', 200, 1700),
+          (20, 'Marketing', 201, 1800),
+          (30, 'Purchasing', 114, 1700);
+        - |
+          insert into departments values
+          (40, 'Human Resources', 203, 2400),
+          (50, 'Shipping', 121, 1500),
+          (60, 'IT', 103, 1400),
+          (70, 'Public Relations', 204, 2700),
+          (80, 'Sales', 145, 2500);
+
+    - number: 3
+      question: "Write a SQL statement to insert one row in jobs table ensuring no duplicate job_id values."
+      answer:
+        - "drop table jobs;"
+        - "create table jobs (JOB_ID varchar(25), JOB_TITLE varchar(60), MIN_SALARY int, MAX_SALARY int);"
+        - "alter table jobs add constraint unq_job_id unique(JOB_ID);"
+        - |
+          insert into jobs values
+          ('AD_PRES', 'President', 20000, 40000),
+          ('AD_VP', 'Administration Vice President', 15000, 30000),
+          ('AD_ASST', 'Administration Assistant', 3000, 6000),
+          ('FI_MGR', 'Finance Manager', 8200, 16000),
+          ('FI_ACCOUNT', 'Accountant', 4200, 9000),
+          ('AC_MGR', 'Accounting Manager', 8200, 16000),
+          ('AC_ACCOUNT', 'Public Accountant', 4200, 9000),
+          ('SA_MAN', 'Sales Manager', 10000, 20000);
+
+    - number: 4
+      question: "Write a SQL statement to increment salary of each employee by 10%."
+      answer:
+        wrong_attempt: "update table employees set SALARY=1.1*SALARY;"
+        correct: "update employees set SALARY = 1.1 * SALARY;"
+
+    - number: 5
+      question: "Write a SQL statement to change email to 'not available' for employees whose department_id is 80 and commission < 0.20."
+      answer:
+        - "update employees
+           set EMAIL = 'not available'
+           where DEPARTMENT_ID = 80 and COMMISSION_PCT < 0.2;"
+
+    - number: 6
+      question: "Write a SQL statement to change email to 'not available' for employees in Purchasing department."
+      note: "Purchasing department_id = 30"
+      answer:
+        - "update employees
+           set EMAIL = 'not available'
+           where DEPARTMENT_ID = 30;"
+
+    - number: 7
+      question: "Write a SQL statement to change email and commission_pct to 'not available' and 0.10 for all employees."
+      answer:
+        wrong_attempt: |
+          update employees
+          set EMAIL='not available',
+          set COMMISSION_PCT=0.1;
+        correct: |
+          update employees
+          set EMAIL='not available', COMMISSION_PCT=0.1;

@@ -1,0 +1,257 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 39
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demodb             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.15 sec)
+
+mysql> use demodb;
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_demodb |
++------------------+
+| countries        |
+| department       |
+| emp              |
+| issue            |
+| job_history      |
+| jobs             |
+| manager          |
+| member101        |
++------------------+
+8 rows in set (0.03 sec)
+
+mysql> create table employees
+    -> (EMPLOYEE_ID int, FIRST_NAME varchar(20), LAST_NAME varchar(20),EMAIL varchar(45),
+    -> PHONE_NUMBER bigint, HIRE_DATE date, JOB_ID char(10), SALARY int,
+    -> COMMISSION_PCT float(5,2), MANAGER_ID int, DEPARTMENT_ID int);
+Query OK, 0 rows affected, 1 warning (0.24 sec)
+
+mysql> table employees;
+Empty set (0.02 sec)
+
+mysql> describe employees;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| EMPLOYEE_ID    | int         | YES  |     | NULL    |       |
+| FIRST_NAME     | varchar(20) | YES  |     | NULL    |       |
+| LAST_NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL          | varchar(45) | YES  |     | NULL    |       |
+| PHONE_NUMBER   | bigint      | YES  |     | NULL    |       |
+| HIRE_DATE      | date        | YES  |     | NULL    |       |
+| JOB_ID         | char(10)    | YES  |     | NULL    |       |
+| SALARY         | int         | YES  |     | NULL    |       |
+| COMMISSION_PCT | float(5,2)  | YES  |     | NULL    |       |
+| MANAGER_ID     | int         | YES  |     | NULL    |       |
+| DEPARTMENT_ID  | int         | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+11 rows in set (0.03 sec)
+
+mysql> create table departments
+    -> (DEPARTMENT_ID int, DEPARTMENT_NAME varchar(45), MANAGER_id int, LOCATION_ID int);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into departments
+    -> values
+    -> (10, "Administration",200,1700),
+    -> (20, "Marketing", 201, 1800),
+    -> (30, "Purchasing", 114,1700);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into departments
+    -> values
+    -> (40, "Human Resources",203,2400),
+    -> (50, "Shipping",121,1500),
+    -> (60, "IT",103,1400),
+    -> (70, "Public Relations",204,2700),
+    -> (80, "Sales",145,2500);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++------------------+
+| Tables_in_demodb |
++------------------+
+| countries        |
+| department       |
+| departments      |
+| emp              |
+| employees        |
+| issue            |
+| job_history      |
+| jobs             |
+| manager          |
+| member101        |
++------------------+
+10 rows in set (0.01 sec)
+
+mysql> table jobs;
+Empty set (0.01 sec)
+
+mysql> describe jobs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| job_id     | int         | YES  |     | NULL    |       |
+| job_title  | varchar(30) | YES  |     |         |       |
+| min_salary | mediumint   | YES  |     | 8000    |       |
+| max_salary | mediumint   | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> drop table jobs;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table jobs
+    -> (JOB_ID varchar(25), JOB_TITLE varchar(60), MIN_SALARY int, MAX_SALARY INT);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into jobs
+    -> values
+    -> ('AD_PRES',     'President',                     20000, 40000),
+    -> ('AD_VP',       'Administration Vice President', 15000, 30000),
+    -> ('AD_ASST',     'Administration Assistant',       3000,  6000),
+    -> ('FI_MGR',      'Finance Manager',                8200, 16000),
+    -> ('FI_ACCOUNT',  'Accountant',                     4200,  9000),
+    -> ('AC_MGR',      'Accounting Manager',             8200, 16000),
+    -> ('AC_ACCOUNT',  'Public Accountant',              4200,  9000),
+    -> ('SA_MAN',      'Sales Manager',                 10000, 20000);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> delete from table jobs;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table jobs' at line 1
+mysql> delete from jobs;
+Query OK, 8 rows affected (0.01 sec)
+
+mysql> table jobs;
+Empty set (0.00 sec)
+
+mysql> describe jobs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| JOB_ID     | varchar(25) | YES  |     | NULL    |       |
+| JOB_TITLE  | varchar(60) | YES  |     | NULL    |       |
+| MIN_SALARY | int         | YES  |     | NULL    |       |
+| MAX_SALARY | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table jobs
+    -> add constraint unq_job_id unique(JOB_ID);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe jobs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| JOB_ID     | varchar(25) | YES  | UNI | NULL    |       |
+| JOB_TITLE  | varchar(60) | YES  |     | NULL    |       |
+| MIN_SALARY | int         | YES  |     | NULL    |       |
+| MAX_SALARY | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into jobs
+    -> values
+    -> ('AD_PRES','President',20000, 40000),
+    -> ('AD_VP','Administration Vice President', 15000, 30000),
+    -> ('AD_ASST','Administration Assistant', 3000,  6000),
+    -> ('FI_MGR','Finance Manager', 8200, 16000),
+    -> ('FI_ACCOUNT','Accountant', 4200,  9000),
+    -> ('AC_MGR','Accounting Manager',8200, 16000),
+    -> ('AC_ACCOUNT','Public Accountant', 4200,  9000),
+    -> ('SA_MAN','Sales Manager', 10000, 20000);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> table jobs;
++------------+-------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                     | MIN_SALARY | MAX_SALARY |
++------------+-------------------------------+------------+------------+
+| AD_PRES    | President                     |      20000 |      40000 |
+| AD_VP      | Administration Vice President |      15000 |      30000 |
+| AD_ASST    | Administration Assistant      |       3000 |       6000 |
+| FI_MGR     | Finance Manager               |       8200 |      16000 |
+| FI_ACCOUNT | Accountant                    |       4200 |       9000 |
+| AC_MGR     | Accounting Manager            |       8200 |      16000 |
+| AC_ACCOUNT | Public Accountant             |       4200 |       9000 |
+| SA_MAN     | Sales Manager                 |      10000 |      20000 |
++------------+-------------------------------+------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> update table jobs
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table jobs' at line 1
+mysql> update table employees
+    -> set SALARY=1.1*SALARY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table employees
+set SALARY=1.1*SALARY' at line 1
+mysql> update employees
+    -> set SALARY=1.1*SALARY;
+Query OK, 10 rows affected (0.01 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
+
+mysql> update employees
+    -> set EMAIL="not available"
+    -> where DEPARTMENT_ID=80 and COMMISSION_PCT<0.2;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> table employees;
++-------------+------------+-----------+---------------+--------------+------------+---------+--------+----------------+------------+---------------+
+| EMPLOYEE_ID | FIRST_NAME | LAST_NAME | EMAIL         | PHONE_NUMBER | HIRE_DATE  | JOB_ID  | SALARY | COMMISSION_PCT | MANAGER_ID | DEPARTMENT_ID |
++-------------+------------+-----------+---------------+--------------+------------+---------+--------+----------------+------------+---------------+
+|         100 | Steven     | King      | SKING         |   5151234567 | 1987-06-17 | AD_PRES |  26400 |           0.00 |        200 |            10 |
+|         101 | Neena      | Kochhar   | NKOCHHAR      |   5151234568 | 1987-06-18 | AD_VP   |  18700 |           0.00 |        200 |            10 |
+|         102 | Lex        | De Haan   | LDEHAAN       |   5151234569 | 1987-06-19 | AD_VP   |  18700 |           0.00 |        200 |            10 |
+|         103 | Alexander  | Hunold    | AHUNOLD       |   5904234567 | 1987-06-20 | IT_PROG |   9900 |           0.00 |        103 |            60 |
+|         104 | Bruce      | Ernst     | BERNST        |   5904234568 | 1987-06-21 | IT_PROG |   6600 |           0.00 |        103 |            60 |
+|         105 | David      | Austin    | DAUSTIN       |   5904234569 | 1987-06-22 | IT_PROG |   5280 |           0.00 |        103 |            60 |
+|         106 | Valli      | Pataballa | VPATABAL      |   5904234560 | 1987-06-23 | IT_PROG |   5280 |           0.00 |        103 |            60 |
+|         107 | Diana      | Lorentz   | DLORENTZ      |   5904235567 | 1987-06-24 | IT_PROG |   4620 |           0.00 |        114 |            30 |
+|         108 | Nancy      | Greenberg | not available |   5151244569 | 1987-06-25 | SA_MAN  |  13200 |           0.00 |        145 |            80 |
+|         109 | Daniel     | Faviet    | not available |   5151244169 | 1987-06-26 | SA_MAN  |   9900 |           0.00 |        145 |            80 |
++-------------+------------+-----------+---------------+--------------+------------+---------+--------+----------------+------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> update employees
+    -> set EMAIL="not available"
+    -> where DEPARTMENT_ID=30;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees
+    -> set EMAIL="not available",
+    -> set COMMISSION_PCT=0.1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set COMMISSION_PCT=0.1' at line 3
+
+mysql> update employees
+    -> set EMAIL="not available", COMMISSION_PCT=0.1;
+Query OK, 10 rows affected (0.01 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
