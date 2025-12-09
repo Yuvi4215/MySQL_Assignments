@@ -1,0 +1,131 @@
+mysql_assignment_4:
+  title: "MySQL Assignment - 4 (DQL)"
+  - question: "Write a query to display the names (first_name, last_name) using alias names 'First Name' and 'Last Name'."
+    answer: |
+      SELECT FIRST_NAME AS "First Name", LAST_NAME AS "Last Name"
+      FROM employees;
+
+  - question: "Write a query to get unique department IDs from the employees table."
+    answer: |
+      SELECT DISTINCT DEPARTMENT_ID
+      FROM employees;
+
+  - question: "Write a query to get all employee details ordered by first name in descending order."
+    answer: |
+      SELECT *
+      FROM employees
+      ORDER BY FIRST_NAME DESC;
+
+  - question: "Write a query to get employee names, salary, and PF (15% of salary)."
+    answer: |
+      SELECT CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names,
+             SALARY,
+             SALARY * 0.15 AS PF
+      FROM employees;
+
+  - question: "Write a query to get employee ID, full name, and salary ordered by salary."
+    answer: |
+      SELECT EMPLOYEE_ID,
+             CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names,
+             SALARY
+      FROM employees
+      ORDER BY SALARY;
+
+  - question: "Write a query to get the total salary payable to employees."
+    answer: |
+      SELECT SUM(SALARY)
+      FROM employees;
+
+  - question: "Write a query to get the maximum and minimum salary."
+    answer: |
+      SELECT MAX(SALARY), MIN(SALARY)
+      FROM employees;
+
+  - question: "Write a query to get the average salary and number of employees."
+    answer: |
+      SELECT AVG(SALARY), COUNT(*)
+      FROM employees;
+
+  - question: "Write a query to get the number of employees working in the company."
+    answer: |
+      SELECT COUNT(*)
+      FROM employees
+      WHERE JOB_ID IS NOT NULL;
+
+  - question: "Write a query to get the number of job roles available that are NOT assigned to any employee."
+    answer: |
+      SELECT COUNT(*)
+      FROM jobs
+      WHERE JOB_ID NOT IN (SELECT DISTINCT JOB_ID FROM employees);
+
+  - question: "Write a query to select the first 10 records from the employees table."
+    answer: |
+      SELECT *
+      FROM employees
+      LIMIT 10;
+
+  - question: "Display name and salary for employees whose salary is not between 10,000 and 15,000."
+    answer: |
+      SELECT CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names,
+             SALARY
+      FROM employees
+      WHERE SALARY NOT BETWEEN 10000 AND 15000;
+
+  - question: "Display name and department ID for employees in departments 30 or 100."
+    answer: |
+      SELECT CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names
+      FROM employees
+      WHERE DEPARTMENT_ID IN (30, 100)
+      ORDER BY DEPARTMENT_ID;
+
+  - question: "Display name and salary for employees NOT earning 10,000–15,000 AND in departments 30 or 100."
+    answer: |
+      SELECT CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names,
+             SALARY
+      FROM employees
+      WHERE SALARY NOT BETWEEN 10000 AND 15000
+        AND DEPARTMENT_ID IN (30, 100);
+
+  - question: "Display employees hired in the year 1987."
+    answer: |
+      SELECT CONCAT(FIRST_NAME, " ", LAST_NAME) AS Names,
+             HIRE_DATE
+      FROM employees
+      WHERE YEAR(HIRE_DATE) = 1987;
+
+  - question: "Display first names of employees having both 'b' AND 'c' in their name."
+    answer: |
+      SELECT FIRST_NAME
+      FROM employees
+      WHERE FIRST_NAME LIKE '%b%'
+        AND FIRST_NAME LIKE '%c%';
+
+  - question: "Display last name, job, and salary for Programmers or Shipping Clerks with salary NOT equal to 4500, 10000, 15000."
+    answer: |
+      SELECT LAST_NAME, JOB_ID, SALARY
+      FROM employees
+      WHERE JOB_ID IN ('IT_PROG', 'SA_MAN')
+        AND SALARY NOT IN (4500, 10000, 15000);
+
+  - question: "Display last names of employees whose names contain exactly 6 characters."
+    answer: |
+      SELECT LAST_NAME
+      FROM employees
+      WHERE LAST_NAME LIKE '______';
+
+  - question: "Display last names of employees where 'e' is the third character."
+    answer: |
+      SELECT LAST_NAME
+      FROM employees
+      WHERE LAST_NAME LIKE '__e%';
+
+  - question: "Display distinct job IDs available in the employees table."
+    answer: |
+      SELECT DISTINCT JOB_ID
+      FROM employees;
+
+  - question: "Select all records of employees whose last name is BLAKE, SCOTT, KING, or FORD."
+    answer: |
+      SELECT *
+      FROM employees
+      WHERE LAST_NAME IN ('BLAKE', 'SCOTT', 'KING', 'FORD');
